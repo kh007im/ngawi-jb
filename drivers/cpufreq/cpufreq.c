@@ -713,7 +713,8 @@ return -EINVAL;
 return count;
 }
 
-#endif
+#endif //CONFIG_CPU_FREQ_VDD_LEVELS
+
 
 #define define_one_ro(_name) \
 static struct freq_attr _name = \
@@ -742,7 +743,7 @@ define_one_rw(scaling_governor);
 define_one_rw(scaling_setspeed);
 #ifdef CONFIG_CPU_FREQ_VDD_LEVELS
 define_one_rw(vdd_levels);
-#endif
+#endif //CONFIG_CPU_FREQ_VDD_LEVELS
 
 static struct attribute *default_attrs[] = {
 	&cpuinfo_min_freq.attr,
@@ -757,8 +758,8 @@ static struct attribute *default_attrs[] = {
 	&scaling_available_governors.attr,
 	&scaling_setspeed.attr,
 #ifdef CONFIG_CPU_FREQ_VDD_LEVELS
-&vdd_levels.attr,
-#endif
+	&vdd_levels.attr,
+#endif //CONFIG_CPU_FREQ_VDD_LEVELS
 	NULL
 };
 
@@ -1859,7 +1860,6 @@ error_out:
 	return ret;
 }
 
-
 #ifdef CONFIG_SEC_LIMIT_MAX_FREQ // limit max freq
 enum {
 	SET_MIN = 0,
@@ -1983,7 +1983,6 @@ int cpufreq_get_limits(int cpu, unsigned int limit)
 		goto out;	
 	if (lock_policy_rwsem_write(cpu) < 0)		
 		goto out_put_freq;
-
 	if (limit == SET_MAX)
 		value = cur_policy->max;	
 	else
@@ -1999,7 +1998,6 @@ out:
 	return ret;		
 }
 #endif
-
 
 /**
  *	cpufreq_update_policy - re-evaluate an existing cpufreq policy

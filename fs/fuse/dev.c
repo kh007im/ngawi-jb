@@ -884,9 +884,15 @@ static int fuse_notify_inval_entry(struct fuse_conn *fc, unsigned int size,
 				   struct fuse_copy_state *cs)
 {
 	struct fuse_notify_inval_entry_out outarg;
-	int err = -EINVAL;
-	char buf[FUSE_NAME_MAX+1];
 	struct qstr name;
+	char *buf;
+	int err = -EINVAL, bs = FUSE_NAME_MAX+1;
+
+	buf = kzalloc(bs, GFP_KERNEL);
+	if (!buf) {
+		fuse_copy_finish(cs);
+		return -ENOMEM;
+	}
 
 	if (size < sizeof(outarg))
 		goto err;
@@ -921,10 +927,12 @@ static int fuse_notify_inval_entry(struct fuse_conn *fc, unsigned int size,
 
 err_unlock:
 	up_read(&fc->killsb);
+	kfree(buf);
 	return err;
 
 err:
 	fuse_copy_finish(cs);
+	kfree(buf);
 	return err;
 }
 

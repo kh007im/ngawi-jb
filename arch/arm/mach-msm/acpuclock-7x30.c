@@ -80,32 +80,34 @@ struct clkctl_acpu_speed {
 static struct clock_state drv_state = { 0 };
 
 static struct cpufreq_frequency_table freq_table[] = {
-	{ 0, 134400 },
-	{ 1, 184320 },
-	{ 2, 249600 },
-	{ 3, 364800 },
-	{ 4, 460800 },
-	{ 5, 576000 },
-	{ 6, 652800 },
-	{ 7, 768000 },
+	{ 0, 24576 },
+	{ 1, 61440 },
+	{ 2, 134400 },
+	{ 3, 184320 },
+	{ 4, 249600 },
+	{ 5, 364800 },
+	{ 6, 460800 },
+	{ 7, 576000 },
+	{ 8, 652800 },
+	{ 9, 768000 },
 	/* 806.4MHz is updated to 1024MHz at runtime for MSM8x55. */
-	{ 8, 806400 },
-	{ 9, 921600 },
-	{ 10, 1017600 },
-	{ 11, 1113600 },
-	{ 12, 1209600 },
-	{ 13, 1305600 },
-	{ 14, 1401600 },
-	{ 15, 1516800 },
-	{ 16, 1612800 },
-	{ 17, 1708800 },
+	{ 10, 806400 },
+	{ 11, 921600 },
+	{ 12, 1017600 },
+	{ 13, 1113600 },
+	{ 14, 1209600 },
+	{ 15, 1305600 },
+	{ 16, 1401600 },
+	{ 17, 1516800 },
+	{ 18, 1612800 },
+	{ 19, 1708800 },
 #if OVERCLOCK_CPU_LOW
-	{ 18, CPUFREQ_TABLE_END },
+	{ 20, CPUFREQ_TABLE_END },
 #else
-	{ 18, 1804800 },
-	{ 19, 1900800 },
-	{ 20, 2016000 },
-	{ 21, CPUFREQ_TABLE_END },
+	{ 20, 1804800 },
+	{ 21, 1900800 },
+	{ 22, 2016000 },
+	{ 23, CPUFREQ_TABLE_END },
 #endif
 };
 
@@ -119,13 +121,13 @@ static struct cpufreq_frequency_table freq_table[] = {
  * know all the h/w requirements.
  */
 static struct clkctl_acpu_speed acpu_freq_tbl[] = {
-//	{ 24576,  SRC_LPXO, 0, 0,  30720000,  900, VDD_RAW(900) },
-//	{ 61440,  PLL_3,    5, 11, 61440000,  900, VDD_RAW(900) },
-	{ 134400, PLL_3,    5, 5,  61440000,  900, VDD_RAW(900) },
-	{ 184320, PLL_3,    5, 4,  61440000,  900, VDD_RAW(900) },
-	{ MAX_AXI_KHZ, SRC_AXI, 1, 0, 61440000, 900, VDD_RAW(900) },
-	{ 249600, PLL_3,    5, 2,  61440000,  900, VDD_RAW(900) },
-	{ 364800, PLL_3,    5, 1,  122800000, 900, VDD_RAW(900) },
+	{ 24576,  SRC_LPXO, 0, 0,  30720000,  800, VDD_RAW(800) },
+	{ 61440,  PLL_3,    5, 11, 61440000,  800, VDD_RAW(800) },
+	{ 134400, PLL_3,    5, 5,  61440000,  800, VDD_RAW(800) },
+	{ 184320, PLL_3,    5, 4,  61440000,  825, VDD_RAW(825) },
+	{ MAX_AXI_KHZ, SRC_AXI, 1, 0, 61440000, 825, VDD_RAW(825) },
+	{ 249600, PLL_3,    5, 2,  61440000,  825, VDD_RAW(825) },
+	{ 364800, PLL_3,    5, 1,  122800000, 850, VDD_RAW(850) },
 	/* AXI has MSMC1 implications. See above. */
 	{ 460800, PLL_1,    2, 0,  153600000, 950, VDD_RAW(950) },
 	{ 576000, PLL_1,    2, 0,  153600000, 1000, VDD_RAW(1000) },
@@ -135,14 +137,14 @@ static struct clkctl_acpu_speed acpu_freq_tbl[] = {
 	 * AXI has MSMC1 implications. See above.
 	 * 806.4MHz is increased to match the SoC's capabilities at runtime
 	 */
-	{ 806400, PLL_2,    3, 0,  UINT_MAX, 1100, VDD_RAW(1100) },
-	{ 921600, PLL_2,    3, 0,  UINT_MAX, 1150, VDD_RAW(1150) },
-	{ 1017600, PLL_2,   3, 0,  UINT_MAX, 1200, VDD_RAW(1200) },
-	{ 1113600, PLL_2,   3, 0,  UINT_MAX, 1200, VDD_RAW(1200) },
-	{ 1209600, PLL_2,   3, 0,  UINT_MAX, 1200, VDD_RAW(1200) },
-	{ 1305600, PLL_2,   3, 0,  UINT_MAX, 1250, VDD_RAW(1250) },
-	{ 1401600, PLL_2,   3, 0,  UINT_MAX, 1250, VDD_RAW(1250) },
-	{ 1516800, PLL_2,   3, 0,  UINT_MAX, 1300, VDD_RAW(1300) },
+	{ 806400, PLL_2,    3, 0,  UINT_MAX, 1025, VDD_RAW(1025) },
+	{ 921600, PLL_2,    3, 0,  UINT_MAX, 1025, VDD_RAW(1025) },
+	{ 1017600, PLL_2,   3, 0,  UINT_MAX, 1075, VDD_RAW(1075) },
+	{ 1113600, PLL_2,   3, 0,  UINT_MAX, 1125, VDD_RAW(1125) },
+	{ 1209600, PLL_2,   3, 0,  UINT_MAX, 1125, VDD_RAW(1125) },
+	{ 1305600, PLL_2,   3, 0,  UINT_MAX, 1150, VDD_RAW(1150) },
+	{ 1401600, PLL_2,   3, 0,  UINT_MAX, 1175, VDD_RAW(1175) },
+	{ 1516800, PLL_2,   3, 0,  UINT_MAX, 1275, VDD_RAW(1275) },
 	{ 1612800, PLL_2,   3, 0,  UINT_MAX, 1300, VDD_RAW(1300) },
 	{ 1708800, PLL_2,   3, 0,  UINT_MAX, 1350, VDD_RAW(1350) },
 #if OVERCLOCK_CPU_LOW
